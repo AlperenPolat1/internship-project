@@ -12,7 +12,7 @@ export default function ContactForm() {
     city: "",
     address: "",
     zip: "",
-    participation: "",
+    participation: false,
   });
 
   const handleChange = (e) => {
@@ -29,6 +29,7 @@ export default function ContactForm() {
   const handleParticipantClick = () => {
     setParticipating((prev) => !prev); // toggle true/false
   };
+  
 
   return (
     <section className="contact">

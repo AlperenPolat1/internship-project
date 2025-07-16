@@ -1,29 +1,39 @@
 import { useState } from "react";
 
-export default function PassengerForm({ index }) {
-  const [form, setForm] = useState({
-    gender: "",
-    name: "",
-    surname: "",
-    nationality: "Türkiye",
-    dob: "",
-  });
+export default function PassengerForm({ index, formData, onFormChange }) {
+  const [form, setForm] = useState(formData);
 
   const handleChange = (e) => {
-    console.log("sdadsa")
     const { name, value } = e.target;
-
+    let updatedForm;
+    
     if (name === "dob") {
       let formatted = value.replace(/\D/g, "");
       if (formatted.length > 2 && formatted.length <= 4) {
         formatted = `${formatted.slice(0, 2)}/${formatted.slice(2)}`;
       } else if (formatted.length > 4) {
-        formatted = `${formatted.slice(0, 2)}/${formatted.slice(2, 4)}/${formatted.slice(4, 8)}`;
+        formatted = `${formatted.slice(0, 2)}/${formatted.slice(
+          2,
+          4
+        )}/${formatted.slice(4, 8)}`;
       }
-      setForm((prev) => ({ ...prev, [name]: formatted }));
+      const updatedForm = { ...form, [name]: formatted };
+      setForm(updatedForm);
+      onFormChange(updatedForm);
     } else {
-      setForm((prev) => ({ ...prev, [name]: value }));
+      const updatedForm = { ...form, [name]: value };
+      setForm(updatedForm);
+      onFormChange(updatedForm);
     }
+  };
+  PassengerForm.isValid = (form) => {
+    return (
+      form.gender.trim() !== "" &&
+      form.name.trim() !== "" &&
+      form.surname.trim() !== "" &&
+      form.nationality.trim() !== "" &&
+      form.dob.trim().length === 10 // DD/MM/YYYY
+    );
   };
 
   const error = (field) => form[field].trim() === "";
@@ -34,7 +44,9 @@ export default function PassengerForm({ index }) {
 
       {/* Gender */}
       <div className="field">
-        <label className="label">Gender <span className="required">*</span></label>
+        <label className="label">
+          Gender <span className="required">*</span>
+        </label>
         <div className="radio-group">
           <label>
             <input
@@ -65,22 +77,24 @@ export default function PassengerForm({ index }) {
       {/* Name & Surname */}
       <div className="row">
         <div className="field half">
-          <label className="label">Name <span className="required">*</span></label>
-          <input
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-          />
+          <label className="label">
+            Name <span className="required">*</span>
+          </label>
+          <input name="name"
+          placeholder="Name"
+           value={form.name}
+            onChange={handleChange} />
           {error("name") && <p className="error">Name is required</p>}
         </div>
 
         <div className="field half">
-          <label className="label">Surname <span className="required">*</span></label>
-          <input
-            name="surname"
-            value={form.surname}
-            onChange={handleChange}
-          />
+          <label className="label">
+            Surname <span className="required">*</span>
+          </label>
+          <input name="surname"
+          placeholder="Surname"
+           value={form.surname} 
+           onChange={handleChange} />
           {error("surname") && <p className="error">Surname is required</p>}
         </div>
       </div>
@@ -88,7 +102,9 @@ export default function PassengerForm({ index }) {
       {/* Nationality & Date of Birth */}
       <div className="row">
         <div className="field half">
-          <label className="label">Nationality <span className="required">*</span></label>
+          <label className="label">
+            Nationality <span className="required">*</span>
+          </label>
           <select
             name="nationality"
             value={form.nationality}
@@ -106,10 +122,14 @@ export default function PassengerForm({ index }) {
             <option value="Germany">Germany</option>
           </select>
         </div>
-        {error("nationality") && <p className="error">Nationality is required</p>}
+        {error("nationality") && (
+          <p className="error">Nationality is required</p>
+        )}
 
         <div className="field half">
-          <label className="label">Date of Birth <span className="required">*</span></label>
+          <label className="label">
+            Date of Birth <span className="required">*</span>
+          </label>
           <input
             name="dob"
             value={form.dob}
