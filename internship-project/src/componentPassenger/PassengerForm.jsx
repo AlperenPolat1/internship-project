@@ -1,0 +1,125 @@
+import { useState } from "react";
+
+export default function PassengerForm({ index }) {
+  const [form, setForm] = useState({
+    gender: "",
+    name: "",
+    surname: "",
+    nationality: "Türkiye",
+    dob: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "dob") {
+      let formatted = value.replace(/\D/g, "");
+      if (formatted.length > 2 && formatted.length <= 4) {
+        formatted = `${formatted.slice(0, 2)}/${formatted.slice(2)}`;
+      } else if (formatted.length > 4) {
+        formatted = `${formatted.slice(0, 2)}/${formatted.slice(2, 4)}/${formatted.slice(4, 8)}`;
+      }
+      setForm((prev) => ({ ...prev, [name]: formatted }));
+    } else {
+      setForm((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const error = (field) => form[field].trim() === "";
+
+  return (
+    <section className="passenger">
+      <h3>{index + 1}. Adult (12+)</h3>
+
+      {/* Gender */}
+      <div className="field">
+        <label className="label">Gender <span className="required">*</span></label>
+        <div className="radio-group">
+          <label>
+            <input
+              type="radio"
+              name={`gender-${index}`}
+              value="Male"
+              onChange={(e) =>
+                setForm((p) => ({ ...p, gender: e.target.value }))
+              }
+            />
+            Male
+          </label>
+          <label>
+            <input
+              type="radio"
+              name={`gender-${index}`}
+              value="Female"
+              onChange={(e) =>
+                setForm((p) => ({ ...p, gender: e.target.value }))
+              }
+            />
+            Female
+          </label>
+        </div>
+        {error("gender") && <p className="error">Gender is required</p>}
+      </div>
+
+      {/* Name & Surname */}
+      <div className="row">
+        <div className="field half">
+          <label className="label">Name <span className="required">*</span></label>
+          <input
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+          />
+          {error("name") && <p className="error">Name is required</p>}
+        </div>
+
+        <div className="field half">
+          <label className="label">Surname <span className="required">*</span></label>
+          <input
+            name="surname"
+            value={form.surname}
+            onChange={handleChange}
+          />
+          {error("surname") && <p className="error">Surname is required</p>}
+        </div>
+      </div>
+
+      {/* Nationality & Date of Birth */}
+      <div className="row">
+        <div className="field half">
+          <label className="label">Nationality <span className="required">*</span></label>
+          <select
+            name="nationality"
+            value={form.nationality}
+            onChange={handleChange}
+          >
+            <option value="Poland">Poland</option>
+            <option value="Sweden">Sweden</option>
+            <option value="France">France</option>
+            <option value="Azerbaijan">Azerbaijan</option>
+            <option value="Portugal">Portugal</option>
+            <option value="Spain">Spain</option>
+            <option value="Denmark">Denmark</option>
+            <option value="England">England</option>
+            <option value="Türkiye">Türkiye</option>
+            <option value="Germany">Germany</option>
+          </select>
+        </div>
+        {error("nationality") && <p className="error">Nationality is required</p>}
+
+        <div className="field half">
+          <label className="label">Date of Birth <span className="required">*</span></label>
+          <input
+            name="dob"
+            value={form.dob}
+            onChange={handleChange}
+            placeholder="DD/MM/YYYY"
+          />
+          {error("dob") && (
+            <p className="error">Please enter a valid date (DD/MM/YYYY)</p>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
