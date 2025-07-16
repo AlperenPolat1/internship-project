@@ -10,6 +10,7 @@ export default function PassengerForm({ index }) {
   });
 
   const handleChange = (e) => {
+    console.log("sdadsa")
     const { name, value } = e.target;
 
     if (name === "dob") {
