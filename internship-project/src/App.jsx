@@ -22,8 +22,17 @@ function App() {
     );
   };
     const handleSavePassengers = () => {
+    const allValid = passengerForms.every((form) =>
+      PassengerForm.isValid(form)
+    );
+
+    if (!allValid) {
+      alert("Please fill in all required passenger fields before saving.");
+      return;
+    }
+
     console.log("Passenger Forms Data:", passengerForms);
-    alert("Passenger data saved to console!");
+    alert("Passenger data saved!");
   };
   return (
     <div className="container">

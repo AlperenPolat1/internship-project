@@ -20,16 +20,41 @@ export default function ContactForm() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {
-    console.log("Contact form saved:", form);
-    alert("Contact info saved (check console)!");
-  };
+  
   const [participating, setParticipating] = useState(false);
 
   const handleParticipantClick = () => {
     setParticipating((prev) => !prev); // toggle true/false
   };
-  
+  const handleSave = () => {
+  const requiredFields = [
+    "name",
+    "surname",
+    "email",
+    "repeatEmail",
+    "country",
+    "city",
+    "address",
+    "zip",
+    "phone"
+  ];
+
+  const allFilled = requiredFields.every((field) => form[field].trim() !== "");
+
+  if (!allFilled) {
+    alert("Please fill in all required contact fields before saving.");
+    return;
+  }
+
+  if (form.email !== form.repeatEmail) {
+    alert("Email and repeat email must match.");
+    return;
+  }
+
+  console.log("Contact form saved:", form);
+  alert("Contact info saved!");
+};
+
 
   return (
     <section className="contact">

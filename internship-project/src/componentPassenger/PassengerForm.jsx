@@ -52,9 +52,10 @@ export default function PassengerForm({ index, formData, onFormChange }) {
             <input
               type="radio"
               name={`gender-${index}`}
+              checked={form.gender === "Male"}
               value="Male"
-              onChange={(e) =>
-                setForm((p) => ({ ...p, gender: e.target.value }))
+               onChange={(e) =>
+                handleChange({ target: { name: "gender", value: e.target.value } })
               }
             />
             Male
@@ -64,8 +65,9 @@ export default function PassengerForm({ index, formData, onFormChange }) {
               type="radio"
               name={`gender-${index}`}
               value="Female"
+              checked={form.gender === "Female"}
               onChange={(e) =>
-                setForm((p) => ({ ...p, gender: e.target.value }))
+                handleChange({ target: { name: "gender", value: e.target.value } })
               }
             />
             Female
