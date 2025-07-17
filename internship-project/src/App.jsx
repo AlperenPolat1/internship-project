@@ -6,8 +6,8 @@ import {useState} from "react";
 function App() {
   const passengerCount = 3; // Example: 3 passengers
 
-  const [passengerForms, setPassengerForms] = useState(
-    Array.from({length: passengerCount}, () => ({
+  const [passengerForms, setPassengerForms] = useState(         
+    Array.from({length: passengerCount}, () => ({             //need an array for every passenger form to save.
       gender: "",
       name: "",                                         // set for every passenger form.
       surname: "",
@@ -17,12 +17,12 @@ function App() {
   );
 
   const updatePassengerForm = (index, updatedForm) => {
-    setPassengerForms((prevForms) =>
-      prevForms.map((form, i) => (i === index ? updatedForm : form))
+    setPassengerForms((prevForms) =>                                   
+      prevForms.map((form, i) => (i === index ? updatedForm : form))       //ith update
     );
   };
     const handleSavePassengers = () => {
-    const allValid = passengerForms.every((form) =>
+    const allValid = passengerForms.every((form) =>                   //check every input is not empty.
       PassengerForm.isValid(form)
     );
 
@@ -31,7 +31,7 @@ function App() {
       return;
     }
 
-    console.log("Passenger Forms Data:", passengerForms);
+    console.log("Passenger Forms Data:", passengerForms);                  //console output
     alert("Passenger data saved!");
   };
   return (

@@ -10,15 +10,15 @@ export default function PassengerForm({ index, formData, onFormChange }) {
     if (name === "dob") {
       let formatted = value.replace(/\D/g, "");
       if (formatted.length > 2 && formatted.length <= 4) {
-        formatted = `${formatted.slice(0, 2)}/${formatted.slice(2)}`;
-      } else if (formatted.length > 4) {
+        formatted = `${formatted.slice(0, 2)}/${formatted.slice(2)}`;          // We made it easier for the user to get DOB input.
+      } else if (formatted.length > 4) {                                        // it is using slashes after every 2 digits.
         formatted = `${formatted.slice(0, 2)}/${formatted.slice(
           2,
           4
         )}/${formatted.slice(4, 8)}`;
       }
       const updatedForm = { ...form, [name]: formatted };
-      setForm(updatedForm);
+      setForm(updatedForm);                                                         //updating that form 
       onFormChange(updatedForm);
     } else {
       const updatedForm = { ...form, [name]: value };
@@ -28,11 +28,11 @@ export default function PassengerForm({ index, formData, onFormChange }) {
   };
   PassengerForm.isValid = (form) => {
     return (
-      form.gender.trim() !== "" &&
+      form.gender.trim() !== "" &&                             // error if it is empty.
       form.name.trim() !== "" &&
       form.surname.trim() !== "" &&
       form.nationality.trim() !== "" &&
-      form.dob.trim().length === 10 // DD/MM/YYYY
+      form.dob.trim().length === 10                                // DD/MM/YYYY
     );
   };
 
@@ -50,10 +50,10 @@ export default function PassengerForm({ index, formData, onFormChange }) {
         <div className="radio-group">
           <label>
             <input
-              type="radio"
-              name={`gender-${index}`}
+              type="radio"                                                                        //gender radio 
+              name={`gender-${index}`} 
               checked={form.gender === "Male"}
-              value="Male"
+              value="Male" 
                onChange={(e) =>
                 handleChange({ target: { name: "gender", value: e.target.value } })
               }
@@ -80,14 +80,14 @@ export default function PassengerForm({ index, formData, onFormChange }) {
       <div className="row">
         <div className="field half">
           <label className="label">
-            Name <span className="required">*</span>
-          </label>
+            Name <span className="required">*</span> 
+          </label>                                                   
           <input name="name"
           placeholder="Name"
            value={form.name}
-            onChange={handleChange} />
-          {error("name") && <p className="error">Name is required</p>}
-        </div>
+            onChange={handleChange} />                           
+          {error("name") && <p className="error">Name is required</p>}         
+        </div>                                                                                  
 
         <div className="field half">
           <label className="label">

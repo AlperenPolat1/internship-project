@@ -39,25 +39,25 @@ export default function ContactForm() {
     "phone"
   ];
 
-  const allFilled = requiredFields.every((field) => form[field].trim() !== "");
+  const allFilled = requiredFields.every((field) => form[field].trim() !== "");                 // error if they are empty
 
   if (!allFilled) {
-    alert("Please fill in all required contact fields before saving.");
+    alert("Please fill in all required contact fields before saving.");         //error message
     return;
   }
 
   if (form.email !== form.repeatEmail) {
-    alert("Email and repeat email must match.");
+    alert("Email and repeat email must match.");             // email check. 
     return;
   }
 
-  console.log("Contact form saved:", form);
+  console.log("Contact form saved:", form);                //classic console output
   alert("Contact info saved!");
 };
 
 
   return (
-    <section className="contact">
+    <section className="contact">         
       <h2>Contact Information</h2>
 
       {/* Row 1: Name & Surname */}
