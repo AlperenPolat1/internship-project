@@ -1,42 +1,49 @@
+import { useState } from "react";
 import PassengerForm from "./componentPassenger/PassengerForm";
 import ContactForm from "./componentContact/ContactForm";
-import "./App.css";          
-import {useState} from "react";
+import "./App.css";
 
 function App() {
   const passengerCount = 3; // Example: 3 passengers
 
-  const [passengerForms, setPassengerForms] = useState(         
-    Array.from({length: passengerCount}, () => ({             //need an array for every passenger form to save.
+  const [passengerForms, setPassengerForms] = useState(
+    Array.from({ length: passengerCount }, () => ({
       gender: "",
-      name: "",                                         // set for every passenger form.
+      name: "",
       surname: "",
       nationality: "Türkiye",
       dob: "",
     }))
   );
 
+  // This flag tells the PassengerForm components to show errors and inital is false 
+  const [showPassengerErrors, setShowPassengerErrors] = useState(false);
+
   const updatePassengerForm = (index, updatedForm) => {
-    setPassengerForms((prevForms) =>                                   
-      prevForms.map((form, i) => (i === index ? updatedForm : form))       //ith update
+    setPassengerForms((prevForms) =>
+      prevForms.map((form, i) => (i === index ? updatedForm : form))
     );
   };
-    const handleSavePassengers = () => {
-    const allValid = passengerForms.every((form) =>                   //check every input is not empty.
+
+  const handleSavePassengers = () => {
+           setShowPassengerErrors(true);                                              // When we are saving, show errors in the passenger forms.
+    
+
+    const allValid = passengerForms.every((form) =>
       PassengerForm.isValid(form)
     );
 
-    if (!allValid) {
-      alert("Please fill in all required passenger fields before saving.");
-      return;
-    }
+    
+    
+    if (allValid){
+    console.log("Passenger Forms Data:", passengerForms);
+    alert("Passenger data saved!");}
 
-    console.log("Passenger Forms Data:", passengerForms);                  //console output
-    alert("Passenger data saved!");
   };
+
   return (
     <div className="container">
-      <ContactForm/>
+      <ContactForm />
       <h1>Passenger Information</h1>
       {passengerForms.map((form, index) => (
         <PassengerForm
@@ -44,6 +51,7 @@ function App() {
           index={index}
           formData={form}
           onFormChange={(updatedForm) => updatePassengerForm(index, updatedForm)}
+          showErrors={showPassengerErrors}
         />
       ))}
       <div className="button-group">

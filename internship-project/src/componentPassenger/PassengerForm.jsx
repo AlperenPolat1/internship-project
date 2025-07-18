@@ -1,24 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function PassengerForm({ index, formData, onFormChange }) {
+export default function PassengerForm({ index, formData, onFormChange, showErrors }) {
   const [form, setForm] = useState(formData);
+
+  // Keep the local form state in sync if formData changes from the parent.
+  useEffect(() => {
+    setForm(formData);
+  }, [formData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    let updatedForm;
-    
     if (name === "dob") {
+      // Auto-format DOB: DD/MM/YYYY while removing non-digit characters.
       let formatted = value.replace(/\D/g, "");
       if (formatted.length > 2 && formatted.length <= 4) {
-        formatted = `${formatted.slice(0, 2)}/${formatted.slice(2)}`;          // We made it easier for the user to get DOB input.
-      } else if (formatted.length > 4) {                                        // it is using slashes after every 2 digits.
-        formatted = `${formatted.slice(0, 2)}/${formatted.slice(
-          2,
-          4
-        )}/${formatted.slice(4, 8)}`;
+        formatted = `${formatted.slice(0, 2)}/${formatted.slice(2)}`;
+      } else if (formatted.length > 4) {
+        formatted = `${formatted.slice(0, 2)}/${formatted.slice(2, 4)}/${formatted.slice(4, 8)}`;
       }
       const updatedForm = { ...form, [name]: formatted };
-      setForm(updatedForm);                                                         //updating that form 
+      setForm(updatedForm);
       onFormChange(updatedForm);
     } else {
       const updatedForm = { ...form, [name]: value };
@@ -26,17 +27,13 @@ export default function PassengerForm({ index, formData, onFormChange }) {
       onFormChange(updatedForm);
     }
   };
-  PassengerForm.isValid = (form) => {
-    return (
-      form.gender.trim() !== "" &&                             // error if it is empty.
-      form.name.trim() !== "" &&
-      form.surname.trim() !== "" &&
-      form.nationality.trim() !== "" &&
-      form.dob.trim().length === 10                                // DD/MM/YYYY
-    );
-  };
 
-  const error = (field) => form[field].trim() === "";
+  // Only show errors if "showErrors" is true.
+  const error = (field) =>
+    showErrors && (!form[field] || form[field].trim() === "");
+
+  // For date of birth, also ensure the length is exactly 10 characters (DD/MM/YYYY).
+  const dobError = showErrors && form.dob.trim().length !== 10;
 
   return (
     <section className="passenger">
@@ -50,11 +47,11 @@ export default function PassengerForm({ index, formData, onFormChange }) {
         <div className="radio-group">
           <label>
             <input
-              type="radio"                                                                        //gender radio 
-              name={`gender-${index}`} 
+              type="radio"
+              name={`gender-${index}`}
               checked={form.gender === "Male"}
-              value="Male" 
-               onChange={(e) =>
+              value="Male"
+              onChange={(e) =>
                 handleChange({ target: { name: "gender", value: e.target.value } })
               }
             />
@@ -80,23 +77,27 @@ export default function PassengerForm({ index, formData, onFormChange }) {
       <div className="row">
         <div className="field half">
           <label className="label">
-            Name <span className="required">*</span> 
-          </label>                                                   
-          <input name="name"
-          placeholder="Name"
-           value={form.name}
-            onChange={handleChange} />                           
-          {error("name") && <p className="error">Name is required</p>}         
-        </div>                                                                                  
+            Name <span className="required">*</span>
+          </label>
+          <input
+            name="name"
+            placeholder="Name"
+            value={form.name}
+            onChange={handleChange}
+          />
+          {error("name") && <p className="error">Name is required</p>}
+        </div>
 
         <div className="field half">
           <label className="label">
             Surname <span className="required">*</span>
           </label>
-          <input name="surname"
-          placeholder="Surname"
-           value={form.surname} 
-           onChange={handleChange} />
+          <input
+            name="surname"
+            placeholder="Surname"
+            value={form.surname}
+            onChange={handleChange}
+          />
           {error("surname") && <p className="error">Surname is required</p>}
         </div>
       </div>
@@ -107,11 +108,7 @@ export default function PassengerForm({ index, formData, onFormChange }) {
           <label className="label">
             Nationality <span className="required">*</span>
           </label>
-          <select
-            name="nationality"
-            value={form.nationality}
-            onChange={handleChange}
-          >
+          <select name="nationality" value={form.nationality} onChange={handleChange}>
             <option value="Poland">Poland</option>
             <option value="Sweden">Sweden</option>
             <option value="France">France</option>
@@ -123,10 +120,8 @@ export default function PassengerForm({ index, formData, onFormChange }) {
             <option value="Türkiye">Türkiye</option>
             <option value="Germany">Germany</option>
           </select>
+          {error("nationality") && <p className="error">Nationality is required</p>}
         </div>
-        {error("nationality") && (
-          <p className="error">Nationality is required</p>
-        )}
 
         <div className="field half">
           <label className="label">
@@ -138,7 +133,7 @@ export default function PassengerForm({ index, formData, onFormChange }) {
             onChange={handleChange}
             placeholder="DD/MM/YYYY"
           />
-          {error("dob") && (
+          {dobError && (
             <p className="error">Please enter a valid date (DD/MM/YYYY)</p>
           )}
         </div>
@@ -146,3 +141,14 @@ export default function PassengerForm({ index, formData, onFormChange }) {
     </section>
   );
 }
+
+// Static validation function used in App.
+PassengerForm.isValid = (form) => {
+  return (
+    form.gender.trim() !== "" &&
+    form.name.trim() !== "" &&
+    form.surname.trim() !== "" &&
+    form.nationality.trim() !== "" &&
+    form.dob.trim().length === 10
+  );
+};
