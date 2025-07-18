@@ -13,7 +13,6 @@ export default function ContactForm() {
     address: "",
     zip: "",
     participation: false,
-    phoneCode : "",
   });
   const [showErrors, setShowErrors] = useState(false);       
 
@@ -40,10 +39,10 @@ export default function ContactForm() {
       "address",
       "zip",
       "phone",
-      "phoneCode"
+      "countryCode"
     ];
 
-    const allFilled = requiredFields.every((field) => form[field].trim() !== "");           //emptiness check
+    const allFilled = requiredFields.every((field) => form[field].trim() !== "");          
 
     // Set showErrors to true so that validation messages are displayed.
     setShowErrors(true);

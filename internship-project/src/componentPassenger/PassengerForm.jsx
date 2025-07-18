@@ -12,6 +12,7 @@ export default function PassengerForm({ index, formData, onFormChange, showError
     const { name, value } = e.target;
     if (name === "dob") {
       // Auto-format DOB: DD/MM/YYYY while removing non-digit characters.
+
       let formatted = value.replace(/\D/g, "");
       if (formatted.length > 2 && formatted.length <= 4) {
         formatted = `${formatted.slice(0, 2)}/${formatted.slice(2)}`;
