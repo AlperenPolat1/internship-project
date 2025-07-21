@@ -17,14 +17,14 @@ export default function PassengerForm({ index, formData, onFormChange, showError
       if (formatted.length > 2 && formatted.length <= 4) {
         formatted = `${formatted.slice(0, 2)}/${formatted.slice(2)}`;
       } else if (formatted.length > 4) {
-        formatted = `${formatted.slice(0, 2)}/${formatted.slice(2, 4)}/${formatted.slice(4, 8)}`;
+        formatted = `${formatted.slice(0, 2)}/${formatted.slice(2, 4)}/${formatted.slice(4, 8)}`;           // slashes after 2. and 4. number.
       }
       const updatedForm = { ...form, [name]: formatted };
       setForm(updatedForm);
-      onFormChange(updatedForm);
+      onFormChange(updatedForm);                                       //update if its formatted.
     } else {
       const updatedForm = { ...form, [name]: value };
-      setForm(updatedForm);
+      setForm(updatedForm);                              
       onFormChange(updatedForm);
     }
   };

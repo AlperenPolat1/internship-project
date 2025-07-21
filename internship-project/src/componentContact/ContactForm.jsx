@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 export default function ContactForm() {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState({                 //usestate to save
     name: "",
     surname: "",
     email: "",
@@ -42,7 +42,7 @@ export default function ContactForm() {
       "countryCode"
     ];
 
-    const allFilled = requiredFields.every((field) => form[field].trim() !== "");          
+    const allFilled = requiredFields.every((field) => form[field].trim() !== "");                 // they have to be not empty   
 
     // Set showErrors to true so that validation messages are displayed.
     setShowErrors(true);

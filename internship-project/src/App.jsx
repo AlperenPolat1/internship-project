@@ -4,14 +4,14 @@ import ContactForm from "./componentContact/ContactForm";
 import "./App.css";
 
 function App() {
-  const passengerCount = 3; // Example: 3 passengers
+  const passengerCount = 3; // Example: 3 passengers or we can create for every passenger.
 
   const [passengerForms, setPassengerForms] = useState(
     Array.from({ length: passengerCount }, () => ({
       gender: "",
       name: "",
       surname: "",
-      nationality: "Türkiye",
+      nationality: "",
       dob: "",
     }))
   );
@@ -45,7 +45,7 @@ function App() {
     <div className="container">
       <ContactForm />
       <h1>Passenger Information</h1>
-      {passengerForms.map((form, index) => (
+      {passengerForms.map((form, index) => (                  // every passenger is seperate 
         <PassengerForm
           key={index}
           index={index}
